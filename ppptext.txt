@@ -1,0 +1,12 @@
+IPython is an alternative Python interpreter that provides improvements over the default Python interpreter. These improvements include syntax highlight, proper indentation, documentation, and much more. With iPython, you can also use Jupyter notebooks to create reports that contain live code, charts, and more.
+A comma-separated values (CSV) file is a delimited text file that uses a comma to separate values. Each line of the file is a data record. Each record consists of one or more fields, separated by commas. 
+pandas is a fast, powerful, flexible and easy to use open source data analysis and manipulation tool, built on top of the Python programming language.
+    Easily handles missing data.
+    It uses Series for one-dimensional data structure and DataFrame for multi-dimensional data structure.
+    It provides an efficient way to slice the data.
+    It provides a flexible way to merge, concatenate or reshape the data.
+    It includes a powerful time series tool to work with.
+Scikit-learn (Sklearn) is the most useful and robust library for machine learning in Python. It provides a selection of efficient tools for machine learning and statistical modeling including classification, regression, clustering and dimensionality reduction via a consistence interface in Python.
+Image result for pylab
+Pylab is a module that provides a Matlab like namespace by importing functions from the modules Numpy and Matplotlib. Numpy provides efficient numerical vector calculations based on underlying Fortran and C binary libraries. Matplotlib contains functions to create visualizations of data. PyLab is a convenience module that bulk imports matplotlib.pyplot (for plotting) and NumPy (for Mathematics and working with arrays) in a single name space.
+print("IPython: ", IPython.__version__) output:IPython:  7.30.1
