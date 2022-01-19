@@ -2,7 +2,6 @@
 import numpy as np
 # read csv file to np
 data_SFE=np.genfromtxt('data_nor.csv',delimiter=',')
-# Min and Max
 def dataset_MinMax(dataset):
 	Min_Max = list()
 	for i in range(len(dataset[0])):
@@ -17,6 +16,7 @@ def normalization(dataset, Min_Max):
 	for row in dataset:
 		for i in range(len(row)):
 			row[i] = (row[i] - Min_Max[i][0]) / (Min_Max[i][1] - Min_Max[i][0])
+		return row
     
  
 Min_Max = dataset_MinMax(data_SFE)

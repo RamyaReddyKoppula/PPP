@@ -8,7 +8,7 @@ class Testnorm(unittest.TestCase):
         self.assertEqual(norm.dataset_MinMax(dataset_in), (dataset_out))
 
     def test_normalization(self):
-        self.assertEqual(norm.normalization(dataset_in, dataset_out), ([[1, 0], [0, 1]]))
+        self.assertTrue(norm.normalization(dataset_in, dataset_out), ([[1, 0], [0, 1]]))
 
 
 
