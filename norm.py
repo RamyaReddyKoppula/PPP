@@ -17,9 +17,22 @@ def normalization(dataset, Min_Max):
 		for i in range(len(row)):
 			row[i] = (row[i] - Min_Max[i][0]) / (Min_Max[i][1] - Min_Max[i][0])
 		return row
+
     
- 
-Min_Max = dataset_MinMax(data_SFE)
-# Normalize columns
-normalization(data_SFE, Min_Max)
-print(data_SFE[0])
+def to_categorical(x, n_col=None):
+    """ One-hot encoding of nominal values """
+    if not n_col:
+        n_col = np.amax(x) + 1
+    one_hot = np.zeros((x.shape[0], n_col))
+    one_hot[np.arange(x.shape[0]), x] = 1
+    return one_hot
+def accuracy_score(y_true, y_pred):
+    """ Compare y_true to y_pred and return the accuracy """
+    accuracy = np.sum(y_true == y_pred, axis=0) / len(y_true)
+    return accuracy
+def Sigmoid(a):
+        return 1 / (1 + np.exp(-a))
+#x = [0, 2, 1, 3]
+#y = [0, 1, 2, 3]
+#hr=accuracy_score(x,y)
+#print(hr)
