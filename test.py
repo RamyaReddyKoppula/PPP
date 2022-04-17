@@ -1,10 +1,8 @@
 import activate
 import numpy as np
-import random
-import math
-import unittest
 import pytest
-import modulefinder
+import PCA
+
 
 def test_sigmoid():
     assert activate.sigmoid(0) ==  0.5
@@ -84,5 +82,19 @@ test_ELU()
 test_SoftPlus()
 test_gradient_ELU()
 test_gradient_SoftPlus()
+def test_pca():
+    data=[[1, 0,1, 1, 0, 1], [0, 1, 0, 0, 2, 1]]
+    #data is reduced to two dimensional
+    pro=PCA.PCA(data, 2)
+    rey= np.array([[pytest.approx(1.41421356e+00),pytest.approx(1.11022302e-16)], 
+                                [pytest.approx(-1.41421356e+00), pytest.approx(-1.11022302e-16)]])
+    assert (pro == rey).all() 
+def test_dataset_MinMax():
+    dataset_in = np.array([[50, 30], [20, 90]])
+    dataset_out =np.array ([[20, 50], [30, 90]])
+    pro=PCA.dataset_MinMax(dataset_in)
+    assert (pro == dataset_out).all()
 
 #Loss functions
+test_pca()
+test_dataset_MinMax()
