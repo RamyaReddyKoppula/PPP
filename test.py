@@ -4,7 +4,7 @@ import random
 import math
 import unittest
 import pytest
-
+import modulefinder
 
 def test_sigmoid():
     assert activate.sigmoid(0) ==  0.5
