@@ -1,49 +1,48 @@
-from __future__ import division
- 
-import numpy as np
-data_SFE=np.genfromtxt('data_nor.csv',delimiter=',')
-def cmdscale(D):
-    """                                                                                       
-    Classical multidimensional scaling (MDS)                                                  
-                                                                                               
-    Parameters                                                                                
-    ----------                                                                                
-    D : (n, n) array                                                                          
-        Symmetric distance matrix.                                                            
-                                                                                               
-    Returns                                                                                   
-    -------                                                                                   
-    Y : (n, p) array                                                                          
-        Configuration matrix. Each column represents a dimension. Only the                    
-        p dimensions corresponding to positive eigenvalues of B are returned.                 
-        Note that each dimension is only determined up to an overall sign,                    
-        corresponding to a reflection.                                                        
-                                                                                               
-    e : (n,) array                                                                            
-        Eigenvalues of B.                                                                     
-                                                                                               
-    """
-    # Number of points                                                                        
-    n = len(D)
- 
-    # Centering matrix                                                                        
-    H = np.eye(n) - np.ones((n, n))/n
- 
-    # YY^T                                                                                    
-    B = -H.dot(D**2).dot(H)/2
- 
-    # Diagonalize                                                                             
-    evals, evecs = np.linalg.eigh(B)
- 
-    # Sort by eigenvalue in descending order                                                  
-    idx   = np.argsort(evals)[::-1]
-    evals = evals[idx]
-    evecs = evecs[:,idx]
- 
-    # Compute the coordinates using positive-eigenvalued components only                      
-    w, = np.where(evals > 0)
-    L  = np.diag(np.sqrt(evals[w]))
-    V  = evecs[:,w]
-    Y  = V.dot(L)
- 
-    return Y, evals
+
+import numpy
+import matplotlib.pyplot as plt
+
+def bval(D, r, s):
+    n = D.shape[0]
+    total_r = numpy.sum(D[:,s] ** 2)
+    total_s = numpy.sum(D[r,:] ** 2)
+    total = numpy.sum(D ** 2)
+    val = (D[r,s] ** 2) - (float(total_r) / float(n)) - (float(total_s) / float(n)) + (float(total) / float(n * n))
+    return -0.5 * val
+
+def main():
+    n = 50; m = 2
+    Y = numpy.random.rand(n, m)
+    D = numpy.zeros((n, n), dtype=complex)
+    for i in range(0, n):
+        for j in range(0, n):
+            D[i, j] = numpy.linalg.norm(Y[i] - Y[j])
+            B = numpy.zeros((n, n), dtype=complex)
+    for i in range(0, n):
+        for j in range(0, n):
+            B[i,j] = bval(D, i, j)
+    print ("\nB matix")
+    print (B)
+    g, U = numpy.linalg.eig(B)
+    idx = g.argsort()[::-1]
+    g = g[idx]
+    U = U[:,idx]
+    print ("Eigenvalues =", g)
+    G = numpy.diag(numpy.sqrt(g))
+    X = numpy.dot(U.T, G)
+    print( "\nMatrix X")
+    print( X)
+    error = 0.0
+    total = 0
+    for i in range(0, n):
+        for j in range(i+1, n):
+            error += (numpy.linalg.norm(X[i] - X[j]) - D[i, j]) ** 2
+            total += 1
+    print ("RMSE =", numpy.sqrt(error / float(total)))
+    plt.plot(X[:,0], X[:,1], 'bo', markersize=14)
+    plt.plot(Y[:,0], Y[:,1], 'ro', markersize=14)
+    plt.show()
+    pass
+
+if __name__ == '__main__':
+    main()
