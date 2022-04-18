@@ -3,7 +3,7 @@ import numpy as np
 import pytest
 import PCA
 
-
+#Activation Functions
 def test_sigmoid():
     assert activate.sigmoid(0) ==  0.5
 def test_sigmoid_gra():
@@ -82,6 +82,9 @@ test_ELU()
 test_SoftPlus()
 test_gradient_ELU()
 test_gradient_SoftPlus()
+
+#PCA
+
 def test_pca():
     data=[[1, 0,1, 1, 0, 1], [0, 1, 0, 0, 2, 1]]
     #data is reduced to two dimensional
@@ -95,6 +98,25 @@ def test_dataset_MinMax():
     pro=PCA.dataset_MinMax(dataset_in)
     assert (pro == dataset_out).all()
 
-#Loss functions
 test_pca()
 test_dataset_MinMax()
+
+#confusion Matrix
+def test_CM():
+    dataset_test = np.array([1, 3, 3, 2, 5, 5, 3, 2, 1, 4, 3, 2, 1, 1, 2])
+    dataset_predict =np.array([1, 2, 3, 4, 2, 3, 3, 2, 1, 2, 3, 1, 5, 1, 1])
+    dataset_out =np.array( [[3., 0., 0., 0., 1.],
+                            [2., 1., 0., 1., 0.],
+                            [0., 1., 3., 0., 0.],
+                            [0., 1., 0., 0., 0.],
+                            [0., 1., 1., 0., 0.]])
+    cm=activate.comp_confmat(dataset_test,dataset_predict)
+    assert (cm == dataset_out).all()
+test_CM()
+
+Matrix=np.array([[6, 2,0], [1, 6,0], [1, 1,8]])
+def test_pma():
+    obt=activate.precision_macro_average(Matrix)
+    out=pytest.approx(0.805)
+    assert (obt == out).all()
+test_pma()

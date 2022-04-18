@@ -44,43 +44,46 @@ def SoftPlus(x):
 def gradient_SoftPlus(x):
     return 1 / (1 + np.exp(-x))
 
-#Loss functions
+#Confusion Matrix
 
-# def CrossEntropy(y, p):
-#         # Avoid division by zero
-#     p = np.clip(p, 1e-15, 1 - 1e-15)
-#     print(p)
-#     return - y * np.log(p) - (1 - y) * np.log(1 - p)
+def comp_confmat(actual, predicted):
 
-# def gradient(y, p):
-#     p = np.clip(p, 1e-15, 1 - 1e-15)
-#     return - (y / p) + (1 - y) / (1 - p)
-# h = np.array([0.10, 0.40, 0.50])
-# q = np.array([0.80, 0.15, 0.05])
-# hr=CrossEntropy(h, q)
-#print(hr)
-def _forward_pass(self, X, training=True):
-        """ Calculate the output of the NN """
-        layer_output = X
-        for layer in self.layers:
-            layer_output = layer.forward_pass(layer_output, training)
+    # extract the different classes
+    classes = np.unique(actual)
 
-        return layer_output
-def train_test_split(X, y, test_size=0.5, shuffle=True, seed=None):
-    """ Split the data into train and test sets """
-    if shuffle:
-        X, y = shuffle_data(X, y, seed)
-    # Split the training data from test data in the ratio specified in
-    # test_size
-    split_i = len(y) - int(len(y) // (1 / test_size))
-    X_train, X_test = X[:split_i], X[split_i:]
-    y_train, y_test = y[:split_i], y[split_i:]
+    # initialize the confusion matrix
+    confmat = np.zeros((len(classes), len(classes)))
 
-    return X_train, X_test, y_train, y_test
-def shuffle_data(X, y, seed=None):
-    """ Random shuffle of the samples in X and y """
-    if seed:
-        np.random.seed(seed)
-    idx = np.arange(X.shape[0])
-    np.random.shuffle(idx)
-    return X[idx], y[idx]    
+    # loop across the different combinations of actual / predicted classes
+    for i in range(len(classes)):
+        for j in range(len(classes)):
+
+           # count the number of instances in each combination of actual / predicted classes
+           confmat[i, j] = np.sum((actual == classes[i]) & (predicted == classes[j]))  
+    return confmat 
+def precision(label, confusion_matrix):
+    col = confusion_matrix[:, label]
+    return confusion_matrix[label, label] / col.sum()
+    
+def recall(label, confusion_matrix):
+    row = confusion_matrix[label, :]
+    return confusion_matrix[label, label] / row.sum()
+
+def precision_macro_average(confusion_matrix):
+    rows, columns = confusion_matrix.shape
+    sum_of_precisions = 0
+    for label in range(rows):
+        sum_of_precisions += precision(label, confusion_matrix)
+    return sum_of_precisions / rows
+
+def recall_macro_average(confusion_matrix):
+    rows, columns = confusion_matrix.shape
+    sum_of_recalls = 0
+    for label in range(columns):
+        sum_of_recalls += recall(label, confusion_matrix)
+    return sum_of_recalls / columns
+def accuracy(confusion_matrix):
+    diagonal_sum = confusion_matrix.trace()
+    sum_of_all_elements = confusion_matrix.sum()
+    return diagonal_sum / sum_of_all_elements 
+
