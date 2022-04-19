@@ -115,8 +115,14 @@ def test_CM():
 test_CM()
 
 Matrix=np.array([[6, 2,0], [1, 6,0], [1, 1,8]])
-def test_pma():
-    obt=activate.precision_macro_average(Matrix)
-    out=pytest.approx(0.805)
+def test_precision():
+    obt=activate.precision(0, Matrix)
+    out=0.75
     assert (obt == out).all()
-test_pma()
+test_precision()
+
+def test_recall():
+    obt=activate.recall(0, Matrix)
+    out=0.75
+    assert (obt == out).all()
+test_recall()
