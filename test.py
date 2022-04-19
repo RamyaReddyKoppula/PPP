@@ -92,14 +92,6 @@ def test_pca():
     rey= np.array([[pytest.approx(1.41421356e+00),pytest.approx(1.11022302e-16)], 
                                 [pytest.approx(-1.41421356e+00), pytest.approx(-1.11022302e-16)]])
     assert (pro == rey).all() 
-def test_dataset_MinMax():
-    dataset_in = np.array([[50, 30], [20, 90]])
-    dataset_out =np.array ([[20, 50], [30, 90]])
-    pro=PCA.dataset_MinMax(dataset_in)
-    assert (pro == dataset_out).all()
-
-test_pca()
-test_dataset_MinMax()
 
 #confusion Matrix
 def test_CM():
@@ -126,3 +118,14 @@ def test_recall():
     out=0.75
     assert (obt == out).all()
 test_recall()
+def test_pma():
+    obt=activate.precision_macro_average(Matrix)
+    out=0.8055555555555555
+    assert (obt == out).all()
+def test_rma():
+    assert activate.recall_macro_average(Matrix) == 0.8023809523809525
+def test_acc():
+    assert activate.accuracy(Matrix) == pytest.approx(0.8)  
+test_pma()
+test_rma()
+test_acc()
